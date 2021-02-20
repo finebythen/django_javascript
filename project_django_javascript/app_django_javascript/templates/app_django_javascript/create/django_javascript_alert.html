@@ -1,0 +1,61 @@
+{% extends 'app_django_javascript/base.html' %}
+
+{% block link %}{% endblock link %}
+
+{% block title %}Django Javascript | Alert{% endblock title %}
+
+{% block style %}
+
+    .card { margin-top: 1rem; }
+    p {
+        margin: 0;
+        padding: 0;
+        font-size: 0.8rem;
+    }
+    .div-alert-container {
+        display: flex;
+        justify-content: flex-start;
+    }
+    input[type=text] { margin-right: 2rem; }
+    .div-submit { margin-top: 1rem; }
+
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="div-alert-container">
+                    <div class="div-alert">
+                        <p>Vorname:</p>
+                        {{ formset.first_name }}
+                    </div>
+                    <div class="div-alert">
+                        <p>Nachname:</p>
+                        {{ formset.last_name }}
+                    </div>
+                    <div class="div-alert">
+                        <p>Alter:</p>
+                        {{ formset.age }}
+                    </div>
+                </div>
+                <div class="div-submit">
+                    <button class="btn btn-success btn-sm" type="submit" onclick="myFunction()" name="alert-submit" id="alert-submit">
+                        Speichern
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  function myFunction() {
+    alert("Person in Datenbank angelegt!");
+  }
+</script>
+{% endblock script %}

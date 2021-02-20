@@ -1,0 +1,110 @@
+{% extends 'app_django_javascript/base.html' %}
+
+{% block link %}{% endblock link %}
+
+{% block title %}Django Javascript | Table Filter{% endblock title %}
+
+{% block style %}
+
+    .card { margin-top: 1rem; }
+    table { font-size: 0.8rem; }
+    .div-filter-box {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <div class="div-filter-box">
+        <input type="text" id="myFirstName" onkeyup="myFunction_1()" placeholder="Vorname.." title="Type in a name">
+        <input type="text" id="myLastName" onkeyup="myFunction_2()" placeholder="Nachname.." title="Type in a name">
+        <input type="number" id="myAge" onkeyup="myFunction_3()" placeholder="Alter.." title="Type in a name">
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Vorname</th>
+                        <th scope="col">Nachname</th>
+                        <th scope="col">Alter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in qs_data %}
+                        <tr>
+                            <td>{{ item.first_name }}</td>
+                            <td>{{ item.last_name }}</td>
+                            <td>{{ item.age }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    function myFunction_1() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myFirstName");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                tr[i].style.display = "none";
+            }
+            }
+        }
+    }
+
+    function myFunction_2() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myLastName");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                tr[i].style.display = "none";
+            }
+            }
+        }
+    }
+
+    function myFunction_3() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myAge");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                tr[i].style.display = "none";
+            }
+            }
+        }
+    }
+</script>
+{% endblock script %}
