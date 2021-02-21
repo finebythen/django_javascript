@@ -11,3 +11,11 @@ class AlertForm(ModelForm):
             'first_name': forms.TextInput(attrs={'placeholder': '...'}),
             'last_name': forms.TextInput(attrs={'placeholder': '...'}),
         }
+
+
+class AjaxCreateForm(ModelForm):
+    class Meta:
+        model = AjaxCreate
+        exclude = [
+            'date_created',
+        ]

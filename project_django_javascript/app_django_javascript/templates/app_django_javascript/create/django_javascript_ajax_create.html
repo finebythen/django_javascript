@@ -1,0 +1,111 @@
+{% extends 'app_django_javascript/base.html' %}
+
+{% block link %}{% endblock link %}
+
+{% block title %}Django & JS | Ajax Create{% endblock title %}
+
+{% block style %}
+
+    .card {
+        margin: 1rem 0;
+        box-shadow: 2.5px 5px #cccccc;
+    }
+    label {
+        margin: 0;
+        padding: 0;
+        font-size: 0.8rem;
+    }
+    .div-ajax-container {
+        display: flex;
+        justify-content: flex-start;
+    }
+    .div-ajax-post { margin: 0 1rem;}
+    .div-title { margin: 2rem 0; }
+    .div-title h4 {
+        text-align: center;
+        font-weight: 700
+    }
+
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <div class="div-title">
+        <h4>Ajax Submit Form</h4>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <form action="" method="post" autocomplete="off" id="post-form" name="post-form">
+                {% csrf_token %}
+                <div class="div-ajax-container">
+                    <div class="div-ajax-post">
+                        <label>Name:</label><br>
+                        {{ formset.name }}
+                    </div>
+                    <div class="div-ajax-post">
+                        <label>Beschreibung:</label><br>
+                        {{ formset.description }}
+                    </div>
+                </div>
+                <div class="div-ajax-post">
+                    <button class="btn btn-success" type="submit" id="ajax-submit" name="ajax-submit">
+                        Speichern
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="alert-box"></div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    const alertBox = document.getElementById('alert-box')
+    const postForm = document.getElementById('post-form')
+    const name = document.getElementById('id_name')
+    const description = document.getElementById('id_description')
+
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    const url = ""
+
+    const handleAlerts = (type, text) =>{
+        alertBox.innerHTML = `<div class="alert alert-${type}" role="alert">
+                                ${text}
+                            </div>`
+    }
+
+    postForm.addEventListener('submit', e=>{
+        e.preventDefault()
+
+        const fd = new FormData()
+        fd.append('csrfmiddlewaretoken', csrf[0].value)
+        fd.append('name', name.value)
+        fd.append('description', description.value)
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            enctype: 'multipart/form-data',
+            data: fd,
+            success: function(response){
+                console.log(response)
+                const sText = `successfully saved ${response.name}`
+                handleAlerts('success', sText)
+                setTimeout(()=>{
+                    alertBox.innerHTML = ""
+                    name.value = ""
+                    description.value = ""
+                }, 2000)
+            },
+            error: function(response){
+                console.log(response)
+                handleAlerts('danger', 'ups...something went wrong')
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        })
+    })
+</script>
+{% endblock script %}

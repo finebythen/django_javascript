@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-import pandas as pd
-import numpy as np
+from django.http import JsonResponse
 
 from .forms import *
 from .models import *
@@ -40,3 +39,19 @@ def javascript_table_filter(request):
 
 def javascript_button_scroll_top(request):
     return render(request, 'app_django_javascript/view/django_javascript_scroll_top_button.html')
+
+
+def javascript_ajax_create(request):
+    form = AjaxCreateForm()
+    data = {}
+
+    if request.is_ajax():
+        form = AjaxCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            data['name'] = form.cleaned_data.get('name')
+            data['status'] = 'ok'
+            return JsonResponse(data)
+
+    context = {'formset': form}
+    return render(request, 'app_django_javascript/create/django_javascript_ajax_create.html', context)
