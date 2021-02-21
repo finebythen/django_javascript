@@ -36,3 +36,7 @@ def javascript_table_filter(request):
 
     context = {'qs_data': qs_data}
     return render(request, 'app_django_javascript/view/django_javascript_table_filter.html', context)
+
+
+def javascript_button_scroll_top(request):
+    return render(request, 'app_django_javascript/view/django_javascript_scroll_top_button.html')

@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path('javascript/alert/', views.javascript_alert, name="Javascript_Alert"),
     path('javascript/table-filter/', views.javascript_table_filter, name="Javascript_Table_Filter"),
+    path('javascript/button-scroll-top/', views.javascript_button_scroll_top, name="Javascript_Button_Scroll_Top"),
 ]
