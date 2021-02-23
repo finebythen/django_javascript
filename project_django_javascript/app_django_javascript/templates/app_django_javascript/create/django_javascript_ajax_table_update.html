@@ -1,0 +1,128 @@
+{% extends 'app_django_javascript/base.html' %}
+
+{% block link %}{% endblock link %}
+
+{% block title %}Django Ajax | Table Update{% endblock title %}
+
+{% block style %}
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas:
+        "cnt-create cnt-view";
+        grid-gap: 1rem;
+        margin: 1rem;
+    }
+    .cnt-create { grid-area: cnt-create; }
+    .cnt-view { grid-area: cnt-view; }
+
+    .cnt-create label { margin-top: 1rem; }
+    .div-post-input-flex {
+        display: flex;
+        justify-content: space-between;
+    }
+    button { margin: 1rem 0; }
+
+{% endblock style %}
+
+{% block content %}
+<div class="grid-container">
+    <div class="cnt-create">
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="post" autocomplete="off" id="post-form" name="post-form">
+                    {% csrf_token %}
+                    <div class="div-post-input-flex">
+                        <div class="div-post-input">
+                            <label>Vorname</label><br>
+                            {{ formset.first_name }}
+                        </div>
+                        <div class="div-post-input">
+                            <label>Nachname</label><br>
+                            {{ formset.last_name }}
+                        </div>
+                        <div class="div-post-input">
+                            <label>Alter</label><br>
+                            {{ formset.age }}
+                        </div>
+                    </div>
+                    <div class="div-post-input">
+                        <button class="btn btn-success" type="submit">
+                            Speichern
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="cnt-view">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover" id="#_appendHere">
+                    <thead>
+                        <tr>
+                            <th scope="col">Vorname</th>
+                            <th scope="col">Nachname</th>
+                            <th scope="col">Alter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in qs_table %}
+                            <tr>
+                                <td>{{ item.first_name }}</td>
+                                <td>{{ item.last_name }}</td>
+                                <td>{{ item.age }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    const form = document.getElementById('post-form')
+    const first_name = document.getElementById('id_first_name')
+    const last_name = document.getElementById('id_last_name')
+    const age = document.getElementById('id_age')
+
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    const url = ""
+
+    form.addEventListener('submit', e=>{
+        e.preventDefault()
+
+        const fd = new FormData()
+        fd.append('csrfmiddlewaretoken', csrf[0].value)
+        fd.append('first_name', first_name.value)
+        fd.append('last_name', last_name.value)
+        fd.append('age', age.value)
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            enctype: 'multipart/form-data',
+            data: fd,
+            success: function(response){
+                console.log(response)
+                setTimeout(()=>{
+                    first_name.value = ""
+                    last_name.value = ""
+                    age.value = 0
+                }, 1000)
+            },
+            error: function(response){
+                console.log(response)
+            },
+            cache: false,
+            contentType: false,
+            processData: false,
+        })
+    })
+</script>
+{% endblock script %}

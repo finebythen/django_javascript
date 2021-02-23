@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 from .forms import *
 from .models import *
@@ -55,3 +56,9 @@ def javascript_ajax_create(request):
 
     context = {'formset': form}
     return render(request, 'app_django_javascript/create/django_javascript_ajax_create.html', context)
+
+
+def javascript_sidebar(request):
+
+    context = {}
+    return render(request, 'app_django_javascript/view/django_javascript_sidebar.html', context)
