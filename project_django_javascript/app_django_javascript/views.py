@@ -59,6 +59,4 @@ def javascript_ajax_create(request):
 
 
 def javascript_sidebar(request):
-
-    context = {}
-    return render(request, 'app_django_javascript/view/django_javascript_sidebar.html', context)
+    return render(request, 'app_django_javascript/view/django_javascript_sidebar.html')
