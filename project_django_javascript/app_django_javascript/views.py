@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+import pandas as pd
+import numpy as np
+import json
 
 from .forms import *
 from .models import *
@@ -60,3 +63,21 @@ def javascript_ajax_create(request):
 
 def javascript_sidebar(request):
     return render(request, 'app_django_javascript/view/django_javascript_sidebar.html')
+
+
+def javascript_table_hide_columns(request):
+
+    list_cols = ['first_name', 'last_name', 'age', 'gender']
+    dict_data = {
+        'first_name': ['John', 'Jane', 'Michael'],
+        'last_name': ['Doe', 'Doe', 'Smith'],
+        'age': [33, 32, 51],
+        'gender': ['Male', 'Female', 'Male'],
+    }
+
+    df_data = pd.DataFrame(dict_data, columns=list_cols)
+    json_raw = df_data.to_json(orient='records')
+    json_data = json.loads(json_raw)
+
+    context = {'json_data': json_data}
+    return render(request, 'app_django_javascript/view/django_javascript_table_hide_columns.html', context)

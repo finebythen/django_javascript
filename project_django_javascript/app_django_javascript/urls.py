@@ -8,4 +8,5 @@ urlpatterns = [
     path('javascript/button-scroll-top/', views.javascript_button_scroll_top, name="Javascript_Button_Scroll_Top"),
     path('javascript/ajax/create/', views.javascript_ajax_create, name="Javascript_Ajax_Create"),
     path('javascript/sidebar/', views.javascript_sidebar, name="Javascript_Sidebar"),
+    path('javascript/table/hide-columns/', views.javascript_table_hide_columns, name="Javascript_Table_Hide_Columns"),
 ]
