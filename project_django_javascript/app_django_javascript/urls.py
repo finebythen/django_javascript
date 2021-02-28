@@ -9,4 +9,10 @@ urlpatterns = [
     path('javascript/ajax/create/', views.javascript_ajax_create, name="Javascript_Ajax_Create"),
     path('javascript/sidebar/', views.javascript_sidebar, name="Javascript_Sidebar"),
     path('javascript/table/hide-columns/', views.javascript_table_hide_columns, name="Javascript_Table_Hide_Columns"),
+
+    # Dependent Dropdowns
+    path('javascript/dropdown/add/', views.javascript_dropdown_create, name="Javascript_Dropdown_Create"),
+    path('javascript/dropdown/update/<int:pk>/', views.javascript_dropdown_update, name="Javascript_Dropdown_Update"),
+    path('ajax/load-models/', views.javascript_dropdown_load_models, name="ajax_load_models"),  # Ajax
+
 ]

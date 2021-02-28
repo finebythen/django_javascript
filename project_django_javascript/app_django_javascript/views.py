@@ -1,9 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
-from django.template.loader import render_to_string
 import pandas as pd
-import numpy as np
 import json
 
 from .forms import *
@@ -81,3 +79,36 @@ def javascript_table_hide_columns(request):
 
     context = {'json_data': json_data}
     return render(request, 'app_django_javascript/view/django_javascript_table_hide_columns.html', context)
+
+
+def javascript_dropdown_create(request):
+    form = CarModelOrderForm()
+    if request.method == 'POST':
+        form = CarModelOrderForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('Javascript_Dropdown_Create')
+    context = {'formset': form}
+    return render(request, 'app_django_javascript/create/django_javascript_dropdown.html', context)
+
+
+def javascript_dropdown_update(request, pk):
+    order = get_object_or_404(DropdownOrder, pk=pk)
+    form = CarModelOrderForm(instance=order)
+    if request.method == 'POST':
+        form = CarModelOrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect("Javascript_Dropdown_Update", pk)
+
+    context = {'formset': form}
+    return render(request, 'app_django_javascript/create/django_javascript_dropdown.html', context)
+
+
+def javascript_dropdown_load_models(request):
+    car_id = request.GET.get('car_id')
+    model = DropdownCarModel.objects.filter(car_id=car_id).all()
+
+    context = {'model': model}
+    return render(request, 'app_django_javascript/dropdowns/car_model_dropdown_list.html', context)
+
